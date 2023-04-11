@@ -1,0 +1,43 @@
+li {
+    max-width: 30em;
+    width: 100%;
+    background: #ddd;
+    display: grid;
+    align-items: center;
+    margin-bottom: 3px;
+    grid-template-columns: 64px 1fr 80px;
+    grid-template-rows: 64px;
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;}
+
+li img.profile {
+    display: inline-block;
+    width: 64px;
+    height: 64px;
+    margin-right: 1em;
+}
+
+h2 {
+    padding-left: 16px;
+    text-align: left;
+}
+
+button.fav {
+    display: inline-block;
+    background: cornflowerblue;
+    margin-right: 20px;
+    border: 1px solid cornflowerblue;
+    border-radius: 6px;
+    padding: 3px;
+    width: 60px;
+    text-transform: uppercase;
+    color: white;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+}
+button.fav.active {
+    color: white;
+    background-color: lightseagreen;
+    font-weight: bold;
+}
