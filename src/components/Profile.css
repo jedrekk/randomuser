@@ -10,6 +10,13 @@ li {
     grid-column-gap: 0px;
     grid-row-gap: 0px;}
 
+li div.empty {
+    display: inline-block;
+    width: 64px;
+    height: 64px;
+    background: #aaa;
+}
+
 li img.profile {
     display: inline-block;
     width: 64px;

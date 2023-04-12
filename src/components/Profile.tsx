@@ -10,9 +10,16 @@ interface ProfileProps {
   toggleFavF: () => void
 }
 
-export const Profile: FunctionComponent<ProfileProps> = ({ profileName, dob, avatar, fav, toggleFavF }) => {
-  const { first, last } = profileName
+export const LoadingProfile = () => {
+  return (
+    <li>
+      <div className="empty" />
+    </li>
+  )
+}
 
+export const Profile: FunctionComponent<ProfileProps> = ({ profileName, dob, avatar, fav, toggleFavF}) => {
+  const { first, last } = profileName
   return (
     <li>
       <img className='profile' src={avatar} />

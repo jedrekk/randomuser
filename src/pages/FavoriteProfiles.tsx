@@ -1,28 +1,17 @@
-// https://randomuser.me/api/?inc=name,dob,picture&noinfo&nat=de&results=20
 import { useEffect, useState } from 'react'
 import { Profile } from '../components/Profile'
 import { ProfileApiT } from '../types'
-import { Link } from 'react-router-dom';
-
-
-const useLocalStorage = (localStorageKey:string, defaultValue:string) => {
-  const [value, setValue] = useState(
-    JSON.parse(localStorage.getItem(localStorageKey)) ?? defaultValue
-  );
-
-  useEffect(() => {
-    localStorage.setItem(localStorageKey, JSON.stringify(value));
-  }, [value, localStorageKey]);
-
-  return [value, setValue];
-};
+import { Link } from 'react-router-dom'
+import { isProfileFavorite } from '../lib/utils'
 
 export const FavoriteProfiles = () => {
   const [favoriteProfiles, setFavoriteProfiles] = useState<ProfileApiT[]>([])
 
   const removeFav = (profileIndex: number) => {
-    const currentProfile = favoriteProfiles.slice(profileIndex, profileIndex+1)[0];
-    const updatedFavoriteProfiles = favoriteProfiles.filter(profile => profile.dob.date !== currentProfile.dob.date);
+    const currentProfile = favoriteProfiles.slice(profileIndex, profileIndex + 1)[0]
+    const updatedFavoriteProfiles = favoriteProfiles.filter(
+      profile => profile.dob.date !== currentProfile.dob.date
+    )
 
     localStorage.setItem('favorites', JSON.stringify(updatedFavoriteProfiles))
     setFavoriteProfiles(updatedFavoriteProfiles)
@@ -35,9 +24,7 @@ export const FavoriteProfiles = () => {
     }
   }, [])
 
-  const isProfileFavorite = (profile:ProfileApiT) => {
-    return favoriteProfiles.map(v => v.dob.date).includes(profile.dob.date);
-  }
+
 
   return (
     <>
@@ -50,7 +37,7 @@ export const FavoriteProfiles = () => {
               key={`k${profile?.dob?.date}`}
               profileName={profile?.name}
               dob={profile?.dob?.date}
-              fav={isProfileFavorite(profile)}
+              fav={isProfileFavorite(profile, favoriteProfiles)}
               avatar={profile?.picture?.medium}
               toggleFavF={() => removeFav(index)}
             />
