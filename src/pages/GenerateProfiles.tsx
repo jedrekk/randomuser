@@ -9,14 +9,25 @@ export const GenerateProfiles = () => {
   const [generatedProfiles, setGeneratedProfiles] = useState<ProfileApiT[]>([])
   const [favoriteProfiles, setFavoriteProfiles] = useState<ProfileApiT[]>([])
   const [loading, setLoading] = useState(false)
+  const [errorState, setErrorState] = useState<string | null>(null)
+
+  const registerError = (error:any) => {
+    setErrorState(error.message)
+    return error
+  }
 
   const getProfiles = async () => {
     setLoading(true)
+    setErrorState(null)
     const response = await fetch(
       `https://randomuser.me/api/?inc=name,dob,picture&noinfo&nat=de&results=${profileCount}`
-    )
-    const data = await response.json()
-    setGeneratedProfiles(data.results)
+    ).catch(registerError)
+
+    if (response.ok) {
+      const data = await response.json()
+      setGeneratedProfiles(data.results)
+    }
+
     setLoading(false)
   }
 
@@ -54,20 +65,24 @@ export const GenerateProfiles = () => {
   return (
     <>
       <h1>Profile Generator</h1>
-      <select onChange={updateGeneratedProfiles}>
-        {Array.from({ length: 16 }, (_, i) => i + 5).map(v => (
-          <option key={`option-${v}`} value={v}>
-            {v}
-          </option>
-        ))}
-      </select>
-      <button onClick={getProfiles}>Load {profileCount} other profiles</button>
-      <Link to="/favorites">See favorite profiles</Link>
+      <Link to="/favorites">See favorite profiles &gt;</Link>
+      <div className="loader block">
+        <select onChange={updateGeneratedProfiles}>
+          {Array.from({ length: 16 }, (_, i) => i + 5).map(v => (
+            <option key={`option-${v}`} value={v}>
+              {v}
+            </option>
+          ))}
+        </select>
+        <button onClick={getProfiles}>Load {profileCount} other profiles</button>
+      </div>
+      {errorState && <div className="error block">{errorState}</div>}
       {loading && (
         <ul>
           {[...new Array(profileCount)].map((v, index) => (
             <LoadingProfile key={`k-${index}`} />
           ))}
+          Loading...
         </ul>
       )}
       {!loading && generatedProfiles.length > 0 && (

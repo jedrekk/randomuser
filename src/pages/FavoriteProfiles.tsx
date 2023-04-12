@@ -29,7 +29,8 @@ export const FavoriteProfiles = () => {
   return (
     <>
       <h1>Favorite profiles</h1>
-      <Link to="/">See more generated profiles</Link>
+      <Link to="/">See more generated profiles &gt;</Link>
+      <h3>Total profiles: {favoriteProfiles.length}</h3>
       {favoriteProfiles.length > 0 && (
         <ul>
           {favoriteProfiles.map((profile: ProfileApiT, index) => (

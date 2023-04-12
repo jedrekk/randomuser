@@ -19,13 +19,59 @@ body {
 
 ul {
   width: 100%;
-  max-width: 30em;
+  max-width: 480px;
   list-style-type: none;
   padding: 0;
   margin: 20px 0 0;
-
 }
 
-h1, h2 {
+h1,
+h2 {
   font-weight: 500;
+}
+
+div.loader select,
+div.loader button {
+  font-size: 115%;
+}
+
+div.loader button {
+  background: cornflowerblue;
+  color: white;
+  border: 0;
+  padding: 5px 15px;
+  margin-left: 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+div.loader button:hover {
+  background: blue;
+  transition: 0.3s background;
+}
+
+div.error {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: white;
+  font-size: 120%;
+  background-color: firebrick;
+}
+
+div.block {
+  max-width: 480px;
+  width: 100%;
+  margin-top: 20px;
+}
+
+a {
+  text-decoration: none;
+  font-weight: bold;
+  color: cornflowerblue;
+}
+a:hover {
+  color: blue;
+  transition: 0.3s color;
 }
