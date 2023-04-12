@@ -2,19 +2,8 @@
 import { useEffect, useState } from 'react'
 import { Profile } from '../components/Profile'
 import { ProfileApiT } from '../types'
+import { Link } from 'react-router-dom'
 
-
-const useLocalStorage = (localStorageKey:string, defaultValue:string) => {
-  const [value, setValue] = useState(
-    JSON.parse(localStorage.getItem(localStorageKey)) ?? defaultValue
-  );
-
-  useEffect(() => {
-    localStorage.setItem(localStorageKey, JSON.stringify(value));
-  }, [value, localStorageKey]);
-
-  return [value, setValue];
-};
 
 export const GenerateProfiles = () => {
   const [profileCount, setProfileCount] = useState(5)
@@ -36,20 +25,20 @@ export const GenerateProfiles = () => {
     getProfiles()
   }, [profileCount])
 
-  const addFav = (profileIndex: number) => {
-    const updatedFavoriteProfiles = [
-      ...generatedProfiles.splice(profileIndex, 1),
-      ...favoriteProfiles,
-    ]
-    localStorage.setItem('favorites', JSON.stringify(updatedFavoriteProfiles))
-    setFavoriteProfiles(updatedFavoriteProfiles)
-  }
-  
-  const removeFav = (profileIndex: number) => {
-    const updatedFavoriteProfiles = [
-      ...generatedProfiles.splice(profileIndex, 1),
-      ...favoriteProfiles,
-    ]
+  const toggleFav = (profileIndex: number) => {
+
+    const currentProfile = generatedProfiles.slice(profileIndex, profileIndex+1)[0];
+    let updatedFavoriteProfiles:ProfileApiT[] = [];
+
+    if (isProfileFavorite(currentProfile)) {
+      updatedFavoriteProfiles = favoriteProfiles.filter(profile => profile.dob.date !== currentProfile.dob.date);
+    } else {
+      updatedFavoriteProfiles = [
+        currentProfile,
+        ...favoriteProfiles
+      ]
+      }
+
     localStorage.setItem('favorites', JSON.stringify(updatedFavoriteProfiles))
     setFavoriteProfiles(updatedFavoriteProfiles)
   }
@@ -68,6 +57,7 @@ export const GenerateProfiles = () => {
   return (
     <>
       <h1>Profile Generator</h1>
+      <Link to="/favorites">See favorite profiles</Link>
       {loading && <div>Loading...</div>}
       {!loading && generatedProfiles.length > 0 && (
         <ul>
@@ -78,22 +68,7 @@ export const GenerateProfiles = () => {
               dob={profile?.dob?.date}
               fav={isProfileFavorite(profile)}
               avatar={profile?.picture?.medium}
-              toggleFavF={() => addFav(index)}
-            />
-          ))}
-        </ul>
-      )}
-      {favoriteProfiles.length > 0 && (
-        <ul>
-          <h3>Favorite profiles</h3>
-          {favoriteProfiles.map((profile: ProfileApiT, index) => (
-            <Profile
-              key={`k${profile?.dob?.date}`}
-              profileName={profile?.name}
-              dob={profile?.dob?.date}
-              fav={isProfileFavorite(profile)}
-              avatar={profile?.picture?.medium}
-              toggleFavF={() => removeFav(index)}
+              toggleFavF={() => toggleFav(index)}
             />
           ))}
         </ul>
